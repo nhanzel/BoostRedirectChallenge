@@ -45,8 +45,8 @@ Router myRouter = new Router();
 var myList = myRouter.Process(urls);
 
 Console.WriteLine("\n The results: \n");
-foreach (var url in urls)
+foreach (var entry in myList)
 {
-    Console.WriteLine(url);
+    Console.WriteLine(entry);
 }
 Console.WriteLine("\n");
