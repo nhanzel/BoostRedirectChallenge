@@ -20,7 +20,6 @@ namespace BoostRedirectChallenge
                     paths.Add(new RedirectPath(routePieces.ToList()));
             }
 
-            //removing the "Where" from this line would allow for the provision outlined in the readme
             string[] keys = paths.Where(x => x.Path.Count > 1).Select(x => x.Path[0]).ToArray();
 
             foreach (var key in keys)
@@ -28,8 +27,12 @@ namespace BoostRedirectChallenge
                 if (paths.Exists(x => x.Path[x.Path.Count - 1] == key))
                 {
                     RedirectPath choppingBlock = paths.First(x => x.Path[0] == key);
-                    paths = paths.Where(x => x.Path[0] != key).ToList();
                     int appendIndex = paths.FindIndex(x => x.Path[x.Path.Count - 1] == key);
+                    if (choppingBlock.Path[choppingBlock.Path.Count - 1] == paths[appendIndex].Path[0])
+                    {
+                        throw new Exception("Infinite redirect");
+                    }
+                    paths = paths.Where(x => x.Path[0] != key).ToList();
                     paths[appendIndex].Path = paths[appendIndex].Path.Concat(choppingBlock.Path.Skip(1)).ToList();  
                 }
             }
