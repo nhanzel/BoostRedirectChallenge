@@ -28,12 +28,12 @@ namespace BoostRedirectChallenge
                 {
                     RedirectPath choppingBlock = paths.First(x => x.Path[0] == key);
                     int appendIndex = paths.FindIndex(x => x.Path[x.Path.Count - 1] == key);
-                    if (choppingBlock.Path[choppingBlock.Path.Count - 1] == paths[appendIndex].Path[0])
+                    if (paths[appendIndex].Path.Contains(choppingBlock.Path[choppingBlock.Path.Count - 1]))
                     {
                         throw new Exception("Infinite redirect");
                     }
+                    paths[appendIndex].Path = paths[appendIndex].Path.Concat(choppingBlock.Path.Skip(1)).ToList();
                     paths = paths.Where(x => x.Path[0] != key).ToList();
-                    paths[appendIndex].Path = paths[appendIndex].Path.Concat(choppingBlock.Path.Skip(1)).ToList();  
                 }
             }
 
